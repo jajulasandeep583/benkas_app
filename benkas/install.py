@@ -8,25 +8,23 @@ import frappe
 # Only seeded if the target Doctype exists on the site (skips HRMS/ERPNext
 # doctypes that aren't installed).
 NATIVE_MODULES = [
-    ("Sales Order",      "sales_order",      "dollar",       "#22c55e", "/sales_order",      "Sales Order"),
-    ("Stock Entry",      "stock_entry",      "box",          "#f59e0b", "/stock_entry",      "Stock Entry"),
-    ("Material Request", "material_request", "box",          "#0ea5e9", "/material_request", "Material Request"),
-    ("Attendance",       "attendance",       "clock",        "#3b82f6", "/attendance",       "Attendance"),
-    ("Leave Request",    "leave_request",    "calendar",     "#ec4899", "/leave_request",    "Leave Application"),
-    ("Expense Claim",    "expense_claim",    "report",       "#8b5cf6", "/expense_claim",    "Expense Claim"),
-    ("My Tasks",         "my_tasks",         "check-circle", "#10b981", "/my_tasks",         "Task"),
-    ("Team",             "team",             "users",        "#f97316", "/team",             "Employee"),
+    ("Gate Entry",       "gate_entry",           "log-in",     "#0ea5e9", "/gate_entry",       "Gate Entry"),
+    ("Daily Progress",   "daily_progress_log",   "clipboard",  "#6366f1", "/daily_progress",   "Daily Progress Log"),
+    ("Material Request", "material_request",      "box",        "#f59e0b", "/material_request", "Material Request"),
+    ("Visitors",         "visitor_log",           "user-check", "#22c55e", "/visitors",         "Visitor Log"),
+    ("Safety Issues",    "safety_violation_log",  "shield",     "#ef4444", "/safety_issues",    "Safety Violation Log"),
+    ("Gate Pass",        "gate_pass",             "ticket",     "#8b5cf6", "/gate_pass",        "Gate Pass"),
 ]
 
-# Report tiles seeded on install — only if the Report exists (i.e. ERPNext
+# Report tiles seeded on install — only if the Report exists (i.e. benkas_erp
 # is installed). They get the mobile KPI cards / chart / filter bar for free.
 # (label, module_name, icon, report_name)
 REPORT_MODULES = [
-    ("Balance Sheet",  "balance_sheet",   "📊", "Balance Sheet"),
-    ("Profit & Loss",  "pl_statement",    "📈", "Profit and Loss Statement"),
-    ("Trial Balance",  "trial_balance",   "⚖️", "Trial Balance"),
-    ("General Ledger", "general_ledger",  "📒", "General Ledger"),
-    ("Stock Balance",  "stock_balance",   "📦", "Stock Balance"),
+    ("Gate Register",      "gate_register",      "📋", "Gate Register"),
+    ("EOD Manpower",       "eod_manpower",       "👷", "EOD Manpower MIS"),
+    ("Weekly Section",     "weekly_section",     "🗓️", "Weekly Section Report"),
+    ("Stoppage Analysis",  "stoppage_analysis",  "⛔", "Stoppage Analysis"),
+    ("Material In vs Out",  "material_in_out",   "📦", "Material Received vs Issued"),
 ]
 
 
@@ -100,9 +98,28 @@ def ensure_native_modules():
     return changed
 
 
+def reset_default_modules():
+    """Wipe the PWA tile config and re-seed the Benkas defaults. Use when the
+    default tile set changes (we switched from generic ERPNext tiles to the
+    Benkas doctypes/reports):
+        bench --site <site> execute benkas.install.reset_default_modules
+    """
+    cfg = frappe.get_single("Benkas PWA Config")
+    cfg.set("modules", [])
+    cfg.save(ignore_permissions=True)
+    # drop the old generic KPI cards we no longer seed
+    for old in ("MT Total Sales Orders", "MT Employees", "MT Open Tasks", "MT Stock Entries"):
+        name = frappe.db.get_value("Number Card", {"label": old})
+        if name:
+            frappe.delete_doc("Number Card", name, ignore_permissions=True, force=True)
+    frappe.db.commit()
+    seed_number_cards()
+    return seed_default_modules()
+
+
 def seed_default_modules():
     """Idempotently add the default native modules to the PWA Config.
-    Safe to re-run (e.g. after installing ERPNext/HRMS later):
+    Safe to re-run (e.g. after installing benkas_erp later):
         bench --site <site> execute benkas.install.seed_default_modules
     """
     cfg = frappe.get_single("Benkas PWA Config")
@@ -196,10 +213,10 @@ def seed_default_modules():
 # Default KPI cards (Count) seeded on install — guarded by doctype existence.
 # (label, document_type, color)
 DEFAULT_CARDS = [
-    ("MT Total Sales Orders", "Sales Order", "#6366f1"),
-    ("MT Employees",          "Employee",    "#f97316"),
-    ("MT Open Tasks",         "Task",        "#10b981"),
-    ("MT Stock Entries",      "Stock Entry", "#f59e0b"),
+    ("Gate Entries",     "Gate Entry",            "#0ea5e9"),
+    ("Material Requests", "Material Request",     "#f59e0b"),
+    ("Safety Issues",    "Safety Violation Log",  "#ef4444"),
+    ("Visitors",         "Visitor Log",           "#22c55e"),
 ]
 
 
