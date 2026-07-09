@@ -1,0 +1,49 @@
+# Copyright (c) 2024, Benkas and Contributors
+# License: GPL-3.0
+
+import os
+
+import frappe
+
+# module-level no_cache = 1 is the v16 pattern (same as HRMS)
+# prevents Frappe from caching this page's rendered HTML
+no_cache = 1
+
+
+def _build_version():
+    """mtime of the built bundle — busts the browser HTTP cache on every
+    yarn build, so users always get the latest app without a hard refresh."""
+    try:
+        path = frappe.get_app_path("benkas", "public", "frontend", "index.js")
+        return int(os.path.getmtime(path))
+    except Exception:
+        return 1
+
+
+def get_context(context):
+    """
+    This file sits at benkas/www/benkas.py
+    Frappe automatically maps it to the URL: yoursite.com/benkas
+    Same mechanism as HRMS: hrms/www/hrms.py → yoursite.com/hrms
+
+    The SPA shell is served to EVERYONE (including guests) so the PWA can
+    render its own polished login screen. The Vue router guard sends
+    unauthenticated users to /benkas/login, and login happens in-app
+    via /api/method/login — no bounce to the Frappe desk login page.
+    """
+    # Get PWA config to inject into window.__MT__
+    try:
+        cfg = frappe.get_cached_doc("Benkas PWA Config")
+        context.pwa_app_name      = cfg.app_name      or "Benkas"
+        context.pwa_theme_color   = cfg.theme_color   or "#6366f1"
+        context.pwa_primary_color = cfg.primary_color or "#6366f1"
+    except Exception:
+        context.pwa_app_name      = "Benkas"
+        context.pwa_theme_color   = "#6366f1"
+        context.pwa_primary_color = "#6366f1"
+
+    context.csrf_token    = frappe.sessions.get_csrf_token()
+    context.session_user  = frappe.session.user
+    context.session_fname = frappe.utils.get_fullname(frappe.session.user)
+    context.site_name     = frappe.local.site
+    context.build_v       = _build_version()

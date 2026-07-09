@@ -1,0 +1,259 @@
+{
+ "actions": [],
+ "creation": "2024-01-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "label",
+  "module_name",
+  "icon",
+  "color",
+  "col_break_1",
+  "gradient_from",
+  "gradient_to",
+  "module_type",
+  "display_order",
+  "is_enabled",
+  "section_source",
+  "doctype_name",
+  "doctype_filters",
+  "doctype_fields",
+  "report_name",
+  "report_filters",
+  "number_card_name",
+  "dashboard_name",
+  "col_break_src",
+  "webpage_route",
+  "external_url",
+  "custom_html_block",
+  "open_in_modal",
+  "badge_count_method",
+  "section_bottom_nav",
+  "show_in_bottom_nav",
+  "bottom_nav_icon",
+  "col_break_nav",
+  "bottom_nav_label",
+  "bottom_nav_order",
+  "section_computed",
+  "target_url"
+ ],
+ "fields": [
+  {
+   "fieldname": "label",
+   "fieldtype": "Data",
+   "label": "Display Label",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Tile text. E.g. 'Leave Request'"
+  },
+  {
+   "fieldname": "module_name",
+   "fieldtype": "Data",
+   "label": "Module Key",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Unique slug, no spaces. E.g. leave_request"
+  },
+  {
+   "fieldname": "icon",
+   "fieldtype": "Data",
+   "label": "Icon (emoji)",
+   "default": "⌘",
+   "in_list_view": 1,
+   "description": "Any emoji, e.g. 📅 💰 👥 📊"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Color",
+   "label": "Icon Color",
+   "default": "#6366f1"
+  },
+  {
+   "fieldname": "col_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gradient_from",
+   "fieldtype": "Color",
+   "label": "Gradient From",
+   "default": "#6366f1"
+  },
+  {
+   "fieldname": "gradient_to",
+   "fieldtype": "Color",
+   "label": "Gradient To",
+   "default": "#8b5cf6"
+  },
+  {
+   "fieldname": "module_type",
+   "fieldtype": "Select",
+   "label": "Module Type",
+   "options": "doc_list\nreport\ndashboard\niframe_url\ncustom_view\ndoctype\nlist_view\nform_view\nnumber_card\nwebpage\ncustom_html\nurl\nfrappe_page",
+   "default": "doc_list",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "display_order",
+   "fieldtype": "Int",
+   "label": "Display Order",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_enabled",
+   "fieldtype": "Check",
+   "label": "Enabled",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "section_source",
+   "fieldtype": "Section Break",
+   "label": "Source"
+  },
+  {
+   "fieldname": "doctype_name",
+   "fieldtype": "Link",
+   "options": "DocType",
+   "label": "DocType",
+   "depends_on": "eval:['doc_list','doctype','list_view','form_view'].includes(doc.module_type)",
+   "description": "The doctype this tile lists, e.g. Sales Invoice"
+  },
+  {
+   "fieldname": "doctype_filters",
+   "fieldtype": "Code",
+   "options": "JSON",
+   "label": "Filters (JSON)",
+   "depends_on": "eval:['doc_list','doctype','list_view'].includes(doc.module_type)",
+   "description": "Optional list filters, e.g. {\"status\": \"Unpaid\"}"
+  },
+  {
+   "fieldname": "doctype_fields",
+   "fieldtype": "Code",
+   "options": "JSON",
+   "label": "Fields (JSON array)",
+   "depends_on": "eval:['doc_list','doctype','list_view','report'].includes(doc.module_type)",
+   "description": "Fields shown on list cards & detail, e.g. [\"customer\", \"posting_date\", \"grand_total\"]. For report tiles: which report columns to show (fieldname or label), in this order. Blank = automatic"
+  },
+  {
+   "fieldname": "report_name",
+   "fieldtype": "Link",
+   "options": "Report",
+   "label": "Report",
+   "depends_on": "eval:doc.module_type=='report'"
+  },
+  {
+   "fieldname": "report_filters",
+   "fieldtype": "Code",
+   "options": "JSON",
+   "label": "Report Filters (JSON)",
+   "depends_on": "eval:doc.module_type=='report'"
+  },
+  {
+   "fieldname": "number_card_name",
+   "fieldtype": "Link",
+   "options": "Number Card",
+   "label": "Number Card",
+   "depends_on": "eval:doc.module_type=='number_card'"
+  },
+  {
+   "fieldname": "dashboard_name",
+   "fieldtype": "Link",
+   "options": "Dashboard",
+   "label": "Dashboard",
+   "depends_on": "eval:doc.module_type=='dashboard'"
+  },
+  {
+   "fieldname": "col_break_src",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "webpage_route",
+   "fieldtype": "Data",
+   "label": "Webpage Route",
+   "depends_on": "eval:doc.module_type=='webpage'",
+   "description": "Frappe Web Page route, e.g. mt-about"
+  },
+  {
+   "fieldname": "external_url",
+   "fieldtype": "Data",
+   "label": "External URL",
+   "depends_on": "eval:doc.module_type=='url'"
+  },
+  {
+   "fieldname": "custom_html_block",
+   "fieldtype": "Code",
+   "options": "HTML",
+   "label": "Custom HTML",
+   "depends_on": "eval:doc.module_type=='custom_html'"
+  },
+  {
+   "fieldname": "open_in_modal",
+   "fieldtype": "Check",
+   "label": "Open in Slide-up Sheet",
+   "default": "0"
+  },
+  {
+   "fieldname": "badge_count_method",
+   "fieldtype": "Data",
+   "label": "Badge Count Method",
+   "description": "Dotted path to a whitelisted method returning an int, e.g. benkas.api.pwa_api.my_open_count"
+  },
+  {
+   "fieldname": "section_bottom_nav",
+   "fieldtype": "Section Break",
+   "label": "Bottom Navigation",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "show_in_bottom_nav",
+   "fieldtype": "Check",
+   "label": "Show in Bottom Nav",
+   "default": "0"
+  },
+  {
+   "fieldname": "bottom_nav_icon",
+   "fieldtype": "Data",
+   "label": "Bottom Nav Icon (emoji)"
+  },
+  {
+   "fieldname": "col_break_nav",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bottom_nav_label",
+   "fieldtype": "Data",
+   "label": "Bottom Nav Label"
+  },
+  {
+   "fieldname": "bottom_nav_order",
+   "fieldtype": "Int",
+   "label": "Bottom Nav Order",
+   "default": "1"
+  },
+  {
+   "fieldname": "section_computed",
+   "fieldtype": "Section Break",
+   "label": "Computed"
+  },
+  {
+   "fieldname": "target_url",
+   "fieldtype": "Data",
+   "label": "Target URL (auto)",
+   "read_only": 1,
+   "description": "Auto-computed from the module type on save"
+  }
+ ],
+ "istable": 1,
+ "module": "Benkas",
+ "modified": "2024-01-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "name": "Benkas PWA Module",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "display_order",
+ "sort_order": "ASC",
+ "track_changes": 0
+}

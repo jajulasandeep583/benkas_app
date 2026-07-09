@@ -1,0 +1,26 @@
+[project]
+name = "benkas"
+authors = [{ name = "Benkas", email = "admin@benkas.com" }]
+description = "Benkas — Configurable PWA on Frappe Framework v16"
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "GPL-3.0" }
+dynamic = ["version"]
+dependencies = [
+    "pywebpush>=2.0.0",
+]
+
+[project.urls]
+Homepage   = "https://github.com/jajulasandeep583/benkas_app"
+Repository = "https://github.com/jajulasandeep583/benkas_app"
+Issues     = "https://github.com/jajulasandeep583/benkas_app/issues"
+
+[tool.frappe]
+frappe_version = ">=16.0.0"
+
+[build-system]
+requires      = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "benkas"
