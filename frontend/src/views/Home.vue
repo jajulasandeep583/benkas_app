@@ -9,7 +9,7 @@
           <span v-if="appConfig.app_name && appConfig.app_name !== 'Benkas'" class="mt-wordmark">
             {{ appConfig.app_name }}
           </span>
-          <span v-else class="mt-wordmark">Midhuna<span class="accent">tech</span></span>
+          <span v-else class="mt-wordmark">Ben<span class="accent">kas</span></span>
         </div>
         <div slot="end" style="padding-right:14px;display:flex;align-items:center;gap:10px;">
           <button

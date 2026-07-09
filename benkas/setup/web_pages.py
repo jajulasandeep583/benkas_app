@@ -68,7 +68,7 @@ def _about_html() -> str:
   </style>
 
   <div class="mt-hero">
-    <div class="mt-wordmark">Midhuna<span class="a">tech</span></div>
+    <div class="mt-wordmark">Ben<span class="a">kas</span></div>
     <div class="mt-tag">Building modern, native-feeling business apps</div>
   </div>
 
