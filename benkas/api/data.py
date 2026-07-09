@@ -142,6 +142,12 @@ _DEFAULT_FIELDS = {
     "Payment Entry":    ["payment_type", "party_type", "party", "posting_date", "paid_amount", "status"],
     "Journal Entry":    ["voucher_type", "posting_date", "total_debit", "user_remark"],
     "Material Request": ["material_request_type", "transaction_date", "schedule_date", "status"],
+    # --- Benkas ERP doctypes (the tiles this app actually ships) ---
+    "Gate Entry":       ["person", "person_type", "plant_section", "entry_type", "time_in", "time_out"],
+    "Daily Progress Log": ["plant_section", "log_date", "incharge", "no_work_today", "stock_entry"],
+    "Visitor Log":      ["visitor_name", "company", "plant_section", "time_in", "time_out"],
+    "Safety Violation Log": ["violation_type", "person", "plant_section", "violation_datetime", "status"],
+    "Gate Pass":        ["person", "person_type", "plant_section", "pass_status", "expected_return_time"],
 }
 
 
@@ -161,6 +167,9 @@ _DEFAULT_TABLES = {
     "Quotation":        {"items": ["item_name", "qty", "uom", "rate", "amount"]},
     "Material Request": {"items": ["item_code", "qty", "uom", "warehouse", "schedule_date"]},
     "Stock Entry":      {"items": ["item_code", "qty", "uom", "s_warehouse", "t_warehouse"]},
+    "Daily Progress Log": {"task_progress": ["task", "status", "percent_complete", "work_description"],
+                           "workers_present": ["person_type", "person", "hours"],
+                           "material_consumed": ["item", "qty", "uom", "task"]},
     "Journal Entry":    {"accounts": ["account", "party", "debit_in_account_currency",
                                       "credit_in_account_currency"]},
     "Payment Entry":    {"references": ["reference_doctype", "reference_name",
