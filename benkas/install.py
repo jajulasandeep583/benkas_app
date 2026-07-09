@@ -150,6 +150,22 @@ def seed_default_modules():
         })
         added.append("Dashboard")
 
+    # Daily EOD — the main daily action: file the Daily Progress Log from the
+    # phone (custom Vue form, requires benkas_erp's Daily Progress Log doctype).
+    if "eod" not in existing and frappe.db.exists("DocType", "Daily Progress Log"):
+        order += 1
+        cfg.append("modules", {
+            "label":         "Daily EOD",
+            "module_name":   "eod",
+            "icon":          "clipboard",
+            "color":         "#6366f1",
+            "route_path":    "/eod",
+            "module_type":   "custom_view",
+            "display_order": order,
+            "is_enabled":    1,
+        })
+        added.append("Daily EOD")
+
     for label, key, icon, color, route, doctype in NATIVE_MODULES:
         if key in existing:
             continue
